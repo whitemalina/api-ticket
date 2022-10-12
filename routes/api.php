@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\EventDataController;
 use App\Http\Controllers\Api\NewEventController;
 use App\Http\Controllers\Api\NewTicketController;
 use App\Http\Controllers\Api\ReportsController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/me', [AuthController::class, 'me']);
+    Route::get('/me', [AuthController::class, 'me']);
     
     Route::post('/createnewticket', 'Api\NewTicketController@createNewTicket');
     Route::post('/createnewevent', 'Api\NewEventController@createNewEvent');
@@ -29,6 +30,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/editeventalt', 'Api\NewEventController@editEventAlt');
     Route::delete('/deleteevent/{id}', 'Api\NewEventController@deleteEvent');
 
+    Route::get('/getcategories', 'CategoryController@index');
+    Route::get('/getcategory/{id}', 'CategoryController@show');
+    Route::post('/addcategory', 'CategoryController@create');
+    Route::patch('/editcategory', 'CategoryController@edit');
+    Route::delete('/deletecategory', 'CategoryController@destroy');
+
+    Route::get('/getevents', 'Api\EventDataController@getAllEvents');
+    Route::get('/geteventfromcategory/{id}', 'Api\EventDataController@getEventFromCategory');
     Route::get('/gettrendingevents', 'Api\EventDataController@getTrendingEvents');
     Route::get('/geteventdata/{id}', 'Api\EventDataController@getEventData');
     Route::get('/getsportsevents', 'Api\EventDataController@getSportsEvents');

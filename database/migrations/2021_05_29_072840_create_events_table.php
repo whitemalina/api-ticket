@@ -16,7 +16,8 @@ class CreateEventsTable extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->string('name');
-            $table->string('catagory');
+            $table->integer('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->string('organizer');
             $table->string('location');
             $table->date('date');

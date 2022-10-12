@@ -32,6 +32,8 @@ class NewTicketController extends BaseController
         $ticket = new Ticket();
         $customer = new Customer();
 
+
+
         $customer->name = $request->c_name;
         $customer->email = $request->c_email;
         $customer->phone = $request->c_phone;

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Cost;
 use App\Models\Event;
 use App\Models\EventData;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 
-class EventDataController extends Controller
+class EventDataController extends BaseController
 {
     public function getTrendingEvents(){
         $trending_events = array();
@@ -78,7 +79,7 @@ class EventDataController extends Controller
 
     public function getFunEvents(){
         $fun_events = array();
-        $fun_list = Event::where('catagory', 'fun')->get();
+        $fun_list = Event::where('category_id', '1')->get();
 
         foreach($fun_list as $f){
             $current_event_data = new EventData();
@@ -86,27 +87,89 @@ class EventDataController extends Controller
             $sale = Sale::where('event_id', $f->id)->get();
 
             $current_event_data->event_id = $f->id;
-            $current_event_data->e_name = $f->name;
-            $current_event_data->e_desc = $f->description;
-            $current_event_data->e_location = $f->location;
-            $current_event_data->e_date = $f->date;
-            $current_event_data->e_organizer = $f->organizer;
-            $current_event_data->e_catagory = $f->catagory;
-            $current_event_data->e_image_url = $f->image_title;
-            $current_event_data->t_type = $cost[0]->t_type;
-            $current_event_data->n_val = $cost[0]->normal;
-            $current_event_data->s_val = $cost[0]->silver;
-            $current_event_data->g_val = $cost[0]->gold;
-            $current_event_data->p_val = $cost[0]->platinum;
-            $current_event_data->total_sold = $sale[0]->total_sold;
-            $current_event_data->total_revenue = $sale[0]->total_revenue;
+            $current_event_data->event_name = $f->name;
+            $current_event_data->event_description = $f->description;
+            $current_event_data->event_location = $f->location;
+            $current_event_data->event_date = $f->date;
+            $current_event_data->event_organizer = $f->organizer;
+            $current_event_data->event_category = Category::where('id', $f->category_id)->get();
+            $current_event_data->event_image_url = $f->image_title;
+            $current_event_data->type = $cost[0]->t_type;
+            $current_event_data->normal_price = $cost[0]->normal;
+//            $current_event_data->silver_price = $cost[0]->silver;
+//            $current_event_data->gold_price = $cost[0]->gold;
+//            $current_event_data->platinum_price = $cost[0]->platinum;
+
+        //    $current_event_data->total_sold = $sale[0]->total_sold;
+       //     $current_event_data->total_revenue = $sale[0]->total_revenue;
 
             $fun_events[] = $current_event_data;
         }
 
         return response($fun_events, 200);
     }
+    public function getAllEvents(){
+        $events = array();
+        $list = Event::all();
 
+        foreach($list as $f){
+            $current_event_data = new EventData();
+            $cost = Cost::where('event_id', $f->id)->get();
+            $sale = Sale::where('event_id', $f->id)->get();
+
+            $current_event_data->event_id = $f->id;
+            $current_event_data->event_name = $f->name;
+            $current_event_data->event_description = $f->description;
+            $current_event_data->event_location = $f->location;
+            $current_event_data->event_date = $f->date;
+            $current_event_data->event_organizer = $f->organizer;
+            $current_event_data->event_category = Category::where('id', $f->category_id)->get();
+            $current_event_data->event_image_url = $f->image_title;
+            $current_event_data->type = $cost[0]->t_type;
+            $current_event_data->normal_price = $cost[0]->normal;
+
+            $events[] = $current_event_data;
+        }
+        return $this->handleResponse(([
+            $events
+        ]), 'Events get successfully' );
+
+        return response($events, 200);
+    }
+    public function getEventFromCategory($category_id){
+        $events = array();
+        $list = Event::where('category_id', $category_id)->get();
+
+        foreach($list as $f){
+            $current_event_data = new EventData();
+            $cost = Cost::where('event_id', $f->id)->get();
+            $sale = Sale::where('event_id', $f->id)->get();
+
+            $current_event_data->event_id = $f->id;
+            $current_event_data->event_name = $f->name;
+            $current_event_data->event_description = $f->description;
+            $current_event_data->event_location = $f->location;
+            $current_event_data->event_date = $f->date;
+            $current_event_data->event_organizer = $f->organizer;
+            $current_event_data->event_category = Category::where('id', $f->category_id)->get();
+            $current_event_data->event_image_url = $f->image_title;
+            $current_event_data->type = $cost[0]->t_type;
+            $current_event_data->normal_price = $cost[0]->normal;
+//            $current_event_data->silver_price = $cost[0]->silver;
+//            $current_event_data->gold_price = $cost[0]->gold;
+//            $current_event_data->platinum_price = $cost[0]->platinum;
+
+            //    $current_event_data->total_sold = $sale[0]->total_sold;
+            //     $current_event_data->total_revenue = $sale[0]->total_revenue;
+
+            $events[] = $current_event_data;
+        }
+        return $this->handleResponse(([
+            $events
+        ]), 'Events from category id get successfully' );
+
+        return response($events, 200);
+    }
     public function getEventData($id){
         $event = Event::where('id', $id)->get();
         $current_event_data = new EventData();

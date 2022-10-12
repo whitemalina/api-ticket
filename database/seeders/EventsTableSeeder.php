@@ -14,16 +14,16 @@ class EventsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('events')->delete();
-        
+
         \DB::table('events')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'name' => 'The Tomorrowland',
-                'catagory' => 'fun',
+                'category_id' => '1',
                 'organizer' => 'TL Inc.',
                 'location' => 'Mountain View, CA',
                 'date' => '2021-05-15',
@@ -33,11 +33,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-29 14:56:24',
                 'updated_at' => '2021-05-29 14:56:24',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 15,
                 'name' => 'The Beach hack',
-                'catagory' => 'fun',
+                'category_id' => '1',
                 'organizer' => 'hillhacks',
                 'location' => 'Miami',
                 'date' => '2021-06-04',
@@ -47,11 +47,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-30 17:05:05',
                 'updated_at' => '2021-05-30 17:05:05',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 16,
                 'name' => 'SnowBoard Blazing',
-                'catagory' => 'sports',
+                'category_id' => '2',
                 'organizer' => 'The snow foundation',
                 'location' => 'Himalayas',
                 'date' => '2021-05-27',
@@ -61,11 +61,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-30 17:06:21',
                 'updated_at' => '2021-05-30 17:06:21',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 17,
                 'name' => 'Dirt Rally',
-                'catagory' => 'sports',
+                'category_id' => '2',
                 'organizer' => 'DIRT org',
                 'location' => 'Amazon',
                 'date' => '2021-05-10',
@@ -75,11 +75,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-30 17:07:53',
                 'updated_at' => '2021-05-30 17:07:53',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 18,
                 'name' => 'Expo 2021',
-                'catagory' => 'fun',
+                'category_id' => '1',
                 'organizer' => 'DUBAI',
                 'location' => 'Dubai',
                 'date' => '2021-08-04',
@@ -89,11 +89,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-30 17:09:00',
                 'updated_at' => '2021-05-30 17:09:00',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 19,
                 'name' => 'Golf Week',
-                'catagory' => 'sports',
+                'category_id' => '2',
                 'organizer' => 'The Golf Club',
                 'location' => 'Abu Dhabi',
                 'date' => '2021-05-20',
@@ -103,11 +103,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-30 17:10:34',
                 'updated_at' => '2021-06-03 01:00:52',
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 20,
                 'name' => 'Fifa World Cup',
-                'catagory' => 'sports',
+                'category_id' => '2',
                 'organizer' => 'World Cup Foundation',
                 'location' => 'Qatar',
                 'date' => '2022-06-23',
@@ -117,11 +117,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-30 17:12:23',
                 'updated_at' => '2021-05-30 17:12:23',
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 21,
                 'name' => 'Scuba fest 2020',
-                'catagory' => 'sports',
+                'category_id' => '2',
                 'organizer' => 'Marine world inc',
                 'location' => 'Dubai',
                 'date' => '2021-05-12',
@@ -131,11 +131,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-30 17:13:54',
                 'updated_at' => '2021-05-30 17:13:54',
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 22,
                 'name' => 'Hockey Battle 2022',
-                'catagory' => 'sports',
+                'category_id' => '2',
                 'organizer' => 'WC foundation',
                 'location' => 'Atlanta',
                 'date' => '2021-05-31',
@@ -145,11 +145,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-30 17:15:13',
                 'updated_at' => '2021-05-30 17:15:13',
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 23,
                 'name' => 'Olympics 2022',
-                'catagory' => 'sports',
+                'category_id' => '2',
                 'organizer' => 'Japan',
                 'location' => 'Tokyo',
                 'date' => '2021-10-19',
@@ -159,11 +159,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-30 17:16:23',
                 'updated_at' => '2021-05-30 17:16:23',
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 24,
                 'name' => 'WWDC \'21',
-                'catagory' => 'fun',
+                'category_id' => '1',
                 'organizer' => 'Apple',
                 'location' => 'Online',
                 'date' => '2021-06-07',
@@ -173,11 +173,11 @@ class EventsTableSeeder extends Seeder
                 'created_at' => '2021-05-30 17:17:27',
                 'updated_at' => '2021-05-30 17:17:27',
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 29,
                 'name' => 'Jet Ski Festival 2020',
-                'catagory' => 'sports',
+                'category_id' => '2',
                 'organizer' => 'JET',
                 'location' => 'Abu Dhabi',
                 'date' => '2021-06-18',
@@ -188,7 +188,7 @@ class EventsTableSeeder extends Seeder
                 'updated_at' => '2021-06-02 22:03:21',
             ),
         ));
-        
-        
+
+
     }
 }

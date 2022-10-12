@@ -13,6 +13,13 @@ class AuthController extends BaseController
 
     public  function login(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        if($validator->fails()){
+            return $this->handleError($validator->errors());
+        }
         if (!Auth::attempt($request->only('email', 'password'))) {
         return  $this->handleError([
             'message' => 'Invalid login details'], 401,401);

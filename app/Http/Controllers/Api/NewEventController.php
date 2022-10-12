@@ -22,12 +22,27 @@ class NewEventController extends BaseController
             return $this->handleError([
                 'message' => 'Unauthorized'], '401',401);
         }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'category_id' => 'required',
+            'organizer' => 'required',
+            'location' => 'required',
+            'date' => 'required',
+            'description' => 'required',
+            'duration' => 'required',
+            'image_title' => 'required'
+        ]);
+        if($validator->fails()){
+            return $this->handleError($validator->errors(), null, 401);
+        }
+
         $event = new Event();
         $cost = new Cost();
         $sale = new Sale();
 
         $event->name = $request->e_name;
-        $event->catagory = $request->e_catagory;
+        $event->category_id = $request->e_category;
         $event->organizer = $request->e_organizer;
         $event->location = $request->e_location;
         $event->date = $request->e_date;

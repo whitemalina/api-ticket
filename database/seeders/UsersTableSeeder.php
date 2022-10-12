@@ -14,7 +14,30 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        
+        \DB::table('categories')->delete();
+
+        \DB::table('categories')->insert(array (
+            0 =>
+                array (
+                    'id' => 1,
+                    'name' => 'fun',
+                ),
+            1 =>
+                array (
+                    'id' => 2,
+                    'name' => 'sports',
+                ),
+            2 =>
+                array (
+                    'id' => 3,
+                    'name' => 'movie',
+                ),
+            3 =>
+                array (
+                    'id' => 4,
+                    'name' => 'theater',
+                ),
+        ));
 
         \DB::table('users')->delete();
         

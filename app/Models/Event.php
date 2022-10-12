@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $table = 'events';
-    protected $fillable = ['name', 'catagory', 'location', 'date', 'description', 'duration', 'image_title'];
+    protected $fillable = ['name', 'category_id', 'location', 'date', 'description', 'duration', 'image_title'];
 }
