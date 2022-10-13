@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     protected $table = 'tickets';
-    protected $fillable = ['event_id', 'customer_id', 't_type', 'no_of_tickets', 'costs', 'user_id'];
+    protected $fillable = ['event_id', 'customer_id', 't_type', 'no_of_tickets', 'costs', 'user_id', 'booking_code'];
 }

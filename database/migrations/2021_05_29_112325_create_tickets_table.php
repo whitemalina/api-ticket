@@ -21,6 +21,8 @@ class CreateTicketsTable extends Migration
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
+            $table->string('booking_code');
+
             $table->integer('t_type');
             $table->integer('no_of_tickets');
             $table->integer('costs');

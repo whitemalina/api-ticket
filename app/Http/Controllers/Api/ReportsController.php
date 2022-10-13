@@ -14,7 +14,7 @@ use App\Models\Sale;
 use App\Models\SalesDetail;
 use App\Models\SalesOverview;
 
-class ReportsController extends Controller
+class ReportsController extends BaseController
 {
     public function getSalesOverview(){
         $sale = Sale::get();
@@ -22,29 +22,32 @@ class ReportsController extends Controller
         
         $s_overview->total_sold = 0;
         $s_overview->total_revenue = 0;
-        $s_overview->n_count = 0;
-        $s_overview->s_count = 0;
-        $s_overview->g_count = 0;
-        $s_overview->p_count = 0;
-        $s_overview->n_rev = 0;
-        $s_overview->s_rev = 0;
-        $s_overview->g_rev = 0;
-        $s_overview->p_rev = 0;
+//        $s_overview->n_count = 0;
+//        $s_overview->s_count = 0;
+//        $s_overview->g_count = 0;
+//        $s_overview->p_count = 0;
+//        $s_overview->n_rev = 0;
+//        $s_overview->s_rev = 0;
+//        $s_overview->g_rev = 0;
+//        $s_overview->p_rev = 0;
 
         foreach($sale as $s){
             $cost = Cost::where('event_id', $s->event_id)->get();
 
             $s_overview->total_sold = $s_overview->total_sold + $s->total_sold;
             $s_overview->total_revenue = $s_overview->total_revenue + $s->total_revenue;
-            $s_overview->n_count = $s_overview->n_count + $s->n_sold;
-            $s_overview->s_count = $s_overview->s_count + $s->s_sold;
-            $s_overview->g_count = $s_overview->g_count + $s->g_sold;
-            $s_overview->p_count = $s_overview->p_count + $s->p_sold;
-            $s_overview->n_rev = $s_overview->n_rev + ($s->n_sold * $cost[0]->normal);
-            $s_overview->s_rev = $s_overview->s_rev + ($s->s_sold * $cost[0]->silver);
-            $s_overview->g_rev = $s_overview->g_rev + ($s->g_sold * $cost[0]->gold);
-            $s_overview->p_rev = $s_overview->p_rev + ($s->p_sold * $cost[0]->platinum);
+//            $s_overview->n_count = $s_overview->n_count + $s->n_sold;
+//            $s_overview->s_count = $s_overview->s_count + $s->s_sold;
+//            $s_overview->g_count = $s_overview->g_count + $s->g_sold;
+//            $s_overview->p_count = $s_overview->p_count + $s->p_sold;
+//            $s_overview->n_rev = $s_overview->n_rev + ($s->n_sold * $cost[0]->normal);
+//            $s_overview->s_rev = $s_overview->s_rev + ($s->s_sold * $cost[0]->silver);
+//            $s_overview->g_rev = $s_overview->g_rev + ($s->g_sold * $cost[0]->gold);
+//            $s_overview->p_rev = $s_overview->p_rev + ($s->p_sold * $cost[0]->platinum);
         }
+        return $this->handleResponse(([
+            $s_overview
+        ]), 'Sale info get successfully' );
         return response($s_overview->toJson(JSON_PRETTY_PRINT), 200);
     }
 
@@ -59,15 +62,15 @@ class ReportsController extends Controller
             $cost = Cost::where('event_id', $e->id)->get();
 
             $sales_detail->event_id = $e->id;
-            $sales_detail->e_name = $e->name;
-            $sales_detail->e_organizer = $e->organizer;
-            $sales_detail->e_date = $e->date;
-            $sales_detail->t_type = $cost[0]->t_type;
-            $sales_detail->n_rev = $sale[0]->n_sold * $cost[0]->normal;
-            $sales_detail->s_rev = $sale[0]->s_sold * $cost[0]->silver;
-            $sales_detail->g_rev = $sale[0]->g_sold * $cost[0]->gold;
-            $sales_detail->p_rev = $sale[0]->p_sold * $cost[0]->platinum;
-            $sales_detail->total_revenue = $sales_detail->n_rev + $sales_detail->s_rev + $sales_detail->g_rev + $sales_detail->p_rev; 
+            $sales_detail->event_name = $e->name;
+            $sales_detail->event_organizer = $e->organizer;
+            $sales_detail->event_date = $e->date;
+            $sales_detail->type = $cost[0]->t_type;
+//            $sales_detail->rev = $sale[0]->n_sold * $cost[0]->normal;
+//            $sales_detail->s_rev = $sale[0]->s_sold * $cost[0]->silver;
+//            $sales_detail->g_rev = $sale[0]->g_sold * $cost[0]->gold;
+//            $sales_detail->p_rev = $sale[0]->p_sold * $cost[0]->platinum;
+            $sales_detail->total_revenue = $sale[0]->n_sold * $cost[0]->normal;
 
             $salesList[] = $sales_detail;
         }

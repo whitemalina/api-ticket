@@ -12,13 +12,13 @@ use App\Models\Sale;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Auth;
 use SebastianBergmann\Environment\Console;
-
+use Validator;
 class NewEventController extends BaseController
 {
 
     public function createNewEvent(Request $request){
         $user = Auth::user();
-        if (!$user->isAdmin()) {
+        if ($user['is_admin'] == '0') {
             return $this->handleError([
                 'message' => 'Unauthorized'], '401',401);
         }
@@ -28,10 +28,12 @@ class NewEventController extends BaseController
             'category_id' => 'required',
             'organizer' => 'required',
             'location' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'description' => 'required',
             'duration' => 'required',
-            'image_title' => 'required'
+            'image_url' => 'required',
+            'price' => 'required',
+            'type' => 'required'
         ]);
         if($validator->fails()){
             return $this->handleError($validator->errors(), null, 401);
@@ -41,14 +43,14 @@ class NewEventController extends BaseController
         $cost = new Cost();
         $sale = new Sale();
 
-        $event->name = $request->e_name;
-        $event->category_id = $request->e_category;
-        $event->organizer = $request->e_organizer;
-        $event->location = $request->e_location;
-        $event->date = $request->e_date;
-        $event->description = $request->e_desc;
-        $event->duration = $request->e_duration;
-        $event->image_title = $request->e_image_url;
+        $event->name = $request->name;
+        $event->category_id = $request->category_id;
+        $event->organizer = $request->organizer;
+        $event->location = $request->location;
+        $event->date = $request->date;
+        $event->description = $request->description;
+        $event->duration = $request->duration;
+        $event->image_title = $request->image_url;
         $event->save();
 
         $sale->event_id = $event->id;
@@ -61,28 +63,27 @@ class NewEventController extends BaseController
         $sale->save();
 
         $cost->event_id = $event->id;
-        $cost->t_type = $request->t_type;
-        $cost->normal = $request->normal;
-        $cost->silver = $request->silver;
-        $cost->gold = $request->gold;
-        $cost->platinum = $request->platinum;
+        $cost->t_type = $request->type;
+        $cost->normal = $request->price;
+        $cost->silver = 0;
+        $cost->gold = 0;
+        $cost->platinum = 0;
         $cost->save();
+        return $this->handleResponse(([
+            $event
+        ]), 'Event successfully created' );
 
-        return response()->json([
-            "message" => "Event created"
-          ], 201);
     }
 
     public function editEvent(Request $request, $id){
         $user = Auth::user();
-        if (!$user->isAdmin()) {
+        if ($user['is_admin'] == '0') {
             return $this->handleError([
                 'message' => 'Unauthorized'], '401',401);
         }
         if (Event::where('id', $id)->exists()) {
             $event = Event::find($id);
 
-            echo $request;
             $event->date = is_null($request->date) ? $event->date : $request->date;
             $event->description = is_null($request->description) ? $event->description : $request->description;
             $event->duration = is_null($request->duration) ? $event->duration : $request->duration;
@@ -91,20 +92,20 @@ class NewEventController extends BaseController
             $event->organizer = is_null($request->e_organizer) ? $event->organizer : $request->e_organizer;
             $event->save();
 
-            return response()->json([
-                "message" => "records updated successfully"
-              ], 200);
+            return $this->handleResponse(([
+                $event
+            ]), 'Event updated successfully' );
+
         }
         else{
-            return response()->json([
-                "message" => "Event not found"
-              ], 404);
+            return $this->handleError([
+                'message' => 'Event not found'], '401',401);
         }
     }
 
     public function editEventAlt(Request $request){
         $user = Auth::user();
-        if (!$user->isAdmin()) {
+        if ($user['is_admin'] == '0') {
             return $this->handleError([
                 'message' => 'Unauthorized'], '401',401);
         }
@@ -133,31 +134,38 @@ class NewEventController extends BaseController
 
     public function deleteEvent($id){
         $user = Auth::user();
-        if (!$user->isAdmin()) {
+        if ($user['is_admin'] == '0') {
             return $this->handleError([
                 'message' => 'Unauthorized'], '401',401);
         }
-        $event = Event::find($id);
-        $ticket = Ticket::where('event_id', $id)->get();
-        $sale = Sale::where('event_id', $id)->get();
-        $cost = Cost::where('event_id', $id)->get();
+        if (Event::where('id', $id)->exists()) {
+            $event = Event::find($id);
+            $ticket = Ticket::where('event_id', $id)->get();
+            $sale = Sale::where('event_id', $id)->get();
+            $cost = Cost::where('event_id', $id)->get();
 
-        foreach($ticket as $t){
-            $t->delete();
+            foreach($ticket as $t){
+                $t->delete();
+            }
+
+            foreach($sale as $s){
+                $s->delete();
+            }
+
+            foreach($cost as $c){
+                $c->delete();
+            }
+
+            $event->delete();
+
+            return $this->handleResponse(([
+                $event
+            ]), 'Event deleted successfully' );
+        } else {
+            return $this->handleError([
+                'message' => 'Event not found'], '401',401);
         }
 
-        foreach($sale as $s){
-            $s->delete();
-        }
 
-        foreach($cost as $c){
-            $c->delete();
-        }
-
-        $event->delete();
-
-        return response()->json([
-            "message" => "records deleted successfully"
-          ], 200);
     }
 }

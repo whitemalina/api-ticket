@@ -17,9 +17,6 @@ class User extends Authenticatable
      *
      * @var array
      */
-    public function isAdmin() {
-        return $this->where('is_admin', true)->exists();
-    }
 
     protected $fillable = [
         'name',

@@ -24,22 +24,21 @@ class EventDataController extends BaseController
             $cost = Cost::where('event_id', $t->event_id)->get();
             $sale = Sale::where('event_id', $t->event_id)->get();
 
-            $current_event_data->event_id = $t->event_id;
-            $current_event_data->e_name = $event[0]->name;
-            $current_event_data->e_desc = $event[0]->description;
-            $current_event_data->e_location = $event[0]->location;
-            $current_event_data->e_date = $event[0]->date;
-            $current_event_data->e_organizer = $event[0]->organizer;
-            $current_event_data->e_catagory = $event[0]->catagory;
-            $current_event_data->e_image_url = $event[0]->image_title;
-            $current_event_data->t_type = $cost[0]->t_type;
-            $current_event_data->n_val = $cost[0]->normal;
-            $current_event_data->s_val = $cost[0]->silver;
-            $current_event_data->g_val = $cost[0]->gold;
-            $current_event_data->p_val = $cost[0]->platinum;
+            $current_event_data->event_id = $event[0]->id;
+            $current_event_data->event_name = $event[0]->name;
+            $current_event_data->event_description = $event[0]->description;
+            $current_event_data->event_location = $event[0]->location;
+            $current_event_data->event_date = $event[0]->date;
+            $current_event_data->event_organizer = $event[0]->organizer;
+            $current_event_data->event_category = Category::where('id', $event[0]->category_id)->get();
+            $current_event_data->event_image_url = $event[0]->image_title;
+            $current_event_data->type = $cost[0]->t_type;
+            $current_event_data->normal_price = $cost[0]->normal;
+//            $current_event_data->silver_price = $cost[0]->silver;
+//            $current_event_data->gold_price = $cost[0]->gold;
+//            $current_event_data->platinum_price = $cost[0]->platinum;
             $current_event_data->total_sold = $sale[0]->total_sold;
             $current_event_data->total_revenue = $sale[0]->total_revenue;
-
             $trending_events[] = $current_event_data;
         }
 
@@ -127,7 +126,8 @@ class EventDataController extends BaseController
             $current_event_data->event_image_url = $f->image_title;
             $current_event_data->type = $cost[0]->t_type;
             $current_event_data->normal_price = $cost[0]->normal;
-
+            $current_event_data->total_sold = $sale[0]->total_sold;
+            $current_event_data->total_revenue = $sale[0]->total_revenue;
             $events[] = $current_event_data;
         }
         return $this->handleResponse(([
@@ -159,8 +159,8 @@ class EventDataController extends BaseController
 //            $current_event_data->gold_price = $cost[0]->gold;
 //            $current_event_data->platinum_price = $cost[0]->platinum;
 
-            //    $current_event_data->total_sold = $sale[0]->total_sold;
-            //     $current_event_data->total_revenue = $sale[0]->total_revenue;
+            $current_event_data->total_sold = $sale[0]->total_sold;
+            $current_event_data->total_revenue = $sale[0]->total_revenue;
 
             $events[] = $current_event_data;
         }
@@ -179,23 +179,24 @@ class EventDataController extends BaseController
             $sale = Sale::where('event_id', $e->id)->get();
 
             $current_event_data->event_id = $e->id;
-            $current_event_data->e_name = $e->name;
-            $current_event_data->e_desc = $e->description;
-            $current_event_data->e_location = $e->location;
-            $current_event_data->e_date = $e->date;
-            $current_event_data->e_duration = $e->duration;
-            $current_event_data->e_organizer = $e->organizer;
-            $current_event_data->e_catagory = $e->catagory;
-            $current_event_data->e_image_url = $e->image_title;
-            $current_event_data->t_type = $cost[0]->t_type;
-            $current_event_data->n_val = $cost[0]->normal;
-            $current_event_data->s_val = $cost[0]->silver;
-            $current_event_data->g_val = $cost[0]->gold;
-            $current_event_data->p_val = $cost[0]->platinum;
+            $current_event_data->event_name = $e->name;
+            $current_event_data->event_description = $e->description;
+            $current_event_data->event_location = $e->location;
+            $current_event_data->event_date = $e->date;
+            $current_event_data->event_organizer = $e->organizer;
+            $current_event_data->event_category = Category::where('id', $e->category_id)->get();
+            $current_event_data->event_image_url = $e->image_title;
+            $current_event_data->type = $cost[0]->t_type;
+            $current_event_data->normal_price = $cost[0]->normal;
+//            $current_event_data->silver_price = $cost[0]->silver;
+//            $current_event_data->gold_price = $cost[0]->gold;
+//            $current_event_data->platinum_price = $cost[0]->platinum;
+
             $current_event_data->total_sold = $sale[0]->total_sold;
             $current_event_data->total_revenue = $sale[0]->total_revenue;
         }
-
-        return response($current_event_data->toJson(JSON_PRETTY_PRINT), 200);
+        return $this->handleResponse(([
+            $current_event_data
+        ]), 'Event ' . $id . ' get successfully' );
     }
 }

@@ -27,8 +27,15 @@ protected function unauthenticated($request, AuthenticationException $exception)
         }
         return response()->json($res, 401);
     }
+        $res = [
+            'success' => false,
+            'error' => 'Unauthenticated',
+        ];
+        if(!empty($errorMsg)){
+            $res['data'] = $errorMsg;
+        }
+        return response()->json($res, 401);
 
-    return redirect()->guest(route('auth.login'));
 }
     /**
      * A list of the inputs that are never flashed for validation exceptions.

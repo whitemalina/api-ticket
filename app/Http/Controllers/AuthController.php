@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -109,6 +110,12 @@ class AuthController extends BaseController
 
     public function me(Request $request)
     {
+        $tickets = Ticket::where('user_id', $request->user()->id)->get();
+        return $this->handleResponse(([
+            'user_info' => $request->user(),
+            'user_tickets' => $tickets,
+        ]),
+            'User info get');
         return $request->user();
     }
 

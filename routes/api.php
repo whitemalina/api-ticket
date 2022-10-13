@@ -23,28 +23,33 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
-    
+
+
+
     Route::post('/createnewticket', 'Api\NewTicketController@createNewTicket');
-    Route::post('/createnewevent', 'Api\NewEventController@createNewEvent');
-    Route::put('/editevent/{id}', 'Api\NewEventController@editEvent');
-    Route::post('/editeventalt', 'Api\NewEventController@editEventAlt');
+
+    Route::put('/createnewevent', 'Api\NewEventController@createNewEvent');
+
+    Route::patch('/editevent/{id}', 'Api\NewEventController@editEvent');
+   // Route::post('/editeventalt', 'Api\NewEventController@editEventAlt');
     Route::delete('/deleteevent/{id}', 'Api\NewEventController@deleteEvent');
 
-    Route::get('/getcategories', 'CategoryController@index');
+    Route::get('/getcategory', 'CategoryController@index');
     Route::get('/getcategory/{id}', 'CategoryController@show');
-    Route::post('/addcategory', 'CategoryController@create');
+    Route::put('/addcategory', 'CategoryController@create');
     Route::patch('/editcategory', 'CategoryController@edit');
     Route::delete('/deletecategory', 'CategoryController@destroy');
 
     Route::get('/getevents', 'Api\EventDataController@getAllEvents');
+//    Route::patch('/getevents', 'Api\EventDataController@getAllEvents');
+
     Route::get('/geteventfromcategory/{id}', 'Api\EventDataController@getEventFromCategory');
     Route::get('/gettrendingevents', 'Api\EventDataController@getTrendingEvents');
     Route::get('/geteventdata/{id}', 'Api\EventDataController@getEventData');
-    Route::get('/getsportsevents', 'Api\EventDataController@getSportsEvents');
-    Route::get('/getfunevents', 'Api\EventDataController@getFunEvents');
+
     
     Route::get('/getsalesoverview', 'Api\ReportsController@getSalesOverview');
     Route::get('/getsalesdetails', 'Api\ReportsController@getSalesDetails');
-    Route::get('/getbookingdetails', 'Api\ReportsController@getBookingDetails');
+
     
 });

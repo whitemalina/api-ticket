@@ -32,7 +32,7 @@ class CategoryController extends BaseController
     public function create(Request $request)
     {
         $user = Auth::user();
-        if (!$user->isAdmin()) {
+        if ($user['is_admin'] == '0') {
             return $this->handleError([
                 'message' => 'Unauthorized'], '401',401);
         }
@@ -91,7 +91,7 @@ class CategoryController extends BaseController
     public function edit(Request $request)
     {
         $user = Auth::user();
-        if (!$user->isAdmin()) {
+        if ($user['is_admin'] == '0') {
             return $this->handleError([
                 'message' => 'Unauthorized'], '401',401);
         }
@@ -108,7 +108,7 @@ class CategoryController extends BaseController
             $category->save();
             return $this->handleResponse(([
                 Category::where('id', $request->id)->get()
-            ]), 'Category update successfully' );
+            ]), 'Category ' . $request->id . ' updated successfully' );
         }
         return $this->handleError('Category not found', null, 401);
     }
@@ -134,7 +134,7 @@ class CategoryController extends BaseController
     public function destroy(Request $request)
     {
         $user = Auth::user();
-        if (!$user->isAdmin()) {
+        if ($user['is_admin'] == '0') {
             return $this->handleError([
                 'message' => 'Unauthorized'], '401',401);
         }
@@ -149,7 +149,7 @@ class CategoryController extends BaseController
             $category->delete();
             return $this->handleResponse(([
                 $exist_category
-            ]), 'Category successfully deleted' );
+            ]), 'Category ' . $request->id . ' successfully deleted' );
         }
         return $this->handleError('Category not found', null, 401);
     }
