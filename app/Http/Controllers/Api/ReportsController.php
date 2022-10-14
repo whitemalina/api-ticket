@@ -13,7 +13,7 @@ use App\Models\Event;
 use App\Models\Sale;
 use App\Models\SalesDetail;
 use App\Models\SalesOverview;
-
+use App\Http\Controllers\Api\BaseController as BaseController;
 class ReportsController extends BaseController
 {
     public function getSalesOverview(){
