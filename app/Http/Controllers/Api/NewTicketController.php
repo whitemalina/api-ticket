@@ -21,7 +21,7 @@ class NewTicketController extends BaseController
             'event_id' => 'required',
             't_type' => 'required',
             'no_of_tickets' => 'required',
-            'total_cost' => 'required',
+            //'total_cost' => 'required',
            // 'user_id'
 //            'name' => 'required',
 //            'email' => 'required|email|unique:users',
