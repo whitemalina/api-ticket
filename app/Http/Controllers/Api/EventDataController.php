@@ -9,7 +9,7 @@ use App\Models\Event;
 use App\Models\EventData;
 use App\Models\Sale;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Api\BaseController as BaseController;
 class EventDataController extends BaseController
 {
     public function getTrendingEvents(){
