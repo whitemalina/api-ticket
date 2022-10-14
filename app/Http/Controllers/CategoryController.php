@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Models\category;
+use App\Models\Category;
 use App\Models\User;
 use Faker\Provider\Base;
 use Illuminate\Http\Request;
