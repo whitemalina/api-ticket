@@ -8,7 +8,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
 use App\Models\Customer;
-use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Models\Sale;
 use Illuminate\Support\Facades\Auth;
 use Validator;
