@@ -10,6 +10,8 @@ use App\Models\EventData;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController as BaseController;
+use Illuminate\Support\Facades\DB;
+use Validator;
 class EventDataController extends BaseController
 {
     public function getTrendingEvents(){
@@ -44,7 +46,45 @@ class EventDataController extends BaseController
 
         return response($trending_events, 200);
     }
+    public function searchEvent(Request $request){
+        $validator = Validator::make($request->all(), [
+            'text' => 'required',
+        ]);
+        if($validator->fails()){
+            return $this->handleError($validator->errors());
+        }
+        $search_events = array();
+        $search_events = Event::where('description','LIKE','%'.$request['text'].'%')->get();
+        //return response($search_events, 200);
 
+        foreach($search_events as $s){
+            $current_event_data = new EventData();
+            $cost = Cost::where('event_id', $s->id)->get();
+            $sale = Sale::where('event_id', $s->id)->get();
+
+            $current_event_data->event_id = $s->id;
+            $current_event_data->e_name = $s->name;
+            $current_event_data->e_desc = $s->description;
+            $current_event_data->e_location = $s->location;
+            $current_event_data->e_date = $s->date;
+            $current_event_data->e_organizer = $s->organizer;
+            $current_event_data->e_catagory = $s->catagory;
+            $current_event_data->e_image_url = $s->image_title;
+            $current_event_data->t_type = $cost[0]->t_type;
+            $current_event_data->n_val = $cost[0]->normal;
+            $current_event_data->s_val = $cost[0]->silver;
+            $current_event_data->g_val = $cost[0]->gold;
+            $current_event_data->p_val = $cost[0]->platinum;
+            $current_event_data->total_sold = $sale[0]->total_sold;
+            $current_event_data->total_revenue = $sale[0]->total_revenue;
+
+            $search_events[] = $current_event_data;
+        }
+
+        return $this->handleResponse(($search_events), 'Found '.count($search_events).' events');
+
+        return response($search_events, 200);
+    }
     public function getSportsEvents(){
         $sports_events = array();
         $sports_list = Event::where('catagory', 'sports')->get();
