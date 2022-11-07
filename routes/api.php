@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/deletecategory', 'CategoryController@destroy');
 
     Route::get('/getevents', 'Api\EventDataController@getAllEvents');
+    Route::post('/searchevents', 'Api\EventDataController@searchEvent');
 //    Route::patch('/getevents', 'Api\EventDataController@getAllEvents');
 
     Route::get('/geteventfromcategory/{id}', 'Api\EventDataController@getEventFromCategory');
